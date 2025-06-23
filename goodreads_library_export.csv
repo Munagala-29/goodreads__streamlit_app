@@ -1,21 +1,11 @@
 Book Id,Title,Author,My Rating,Average Rating,Publisher,Number of Pages,Year Published,Date Read,Date Added,Exclusive Shelf
-1,The Hobbit,J.R.R. Tolkien,5,4.27,Del Rey,320,1937,2021-04-15,2021-03-01,read
-2,1984,George Orwell,4,4.17,Signet Classic,328,1949,2021-06-10,2021-05-20,read
-3,The Alchemist,Paulo Coelho,3,3.87,HarperOne,208,1988,2020-12-30,2020-12-01,read
-4,Atomic Habits,James Clear,5,4.37,Avery,320,2018,2022-02-14,2022-01-10,read
-5,To Kill a Mockingbird,Harper Lee,4,4.28,"J.B. Lippincott & Co.",281,1960,2020-07-22,2020-06-10,read
-6,The Lean Startup,Eric Ries,4,4.14,Crown Business,320,2011,2024-02-05,2024-01-20,read
-7,The Power of Habit,Charles Duhigg,5,4.12,Random House,371,2012,2023-03-12,2023-02-20,read
-8,Sapiens,Yuval Noah Harari,4,4.41,Harvill Secker,498,2011,2023-04-01,2023-03-10,read
-9,The 5 AM Club,Robin Sharma,4,4.25,HarperCollins,336,2018,2023-11-12,2023-10-05,read
-10,Rich Dad Poor Dad,Robert T. Kiyosaki,4,4.14,Warner Books,207,1997,2023-06-15,2023-05-01,read
-11,Think and Grow Rich,Napoleon Hill,3,4.17,TarcherPerigee,238,1937,2020-02-10,2020-01-05,read
-12,Ikigai,Hector Garcia,5,4.14,Penguin,208,2016,2023-01-05,2022-12-15,read
-13,Deep Work,Cal Newport,4,4.20,Grand Central Publishing,296,2016,2023-07-08,2023-06-12,read
-14,Educated,Tara Westover,5,4.47,Random House,334,2018,2022-12-20,2022-11-25,read
-15,The Silent Patient,Alex Michaelides,4,4.11,Celadon Books,336,2019,2022-09-14,2022-08-15,read
-16,Becoming,Michelle Obama,5,4.54,Crown Publishing Group,448,2018,2021-11-20,2021-10-05,read
-17,"Man’s Search for Meaning",Viktor E. Frankl,4,4.36,Beacon Press,165,1946,2021-03-25,2021-02-28,read
-18,"Can’t Hurt Me",David Goggins,5,4.36,Lioncrest Publishing,364,2018,2023-08-30,2023-07-25,read
-19,The Psychology of Money,Morgan Housel,4,4.36,Harriman House,252,2020,2023-09-15,2023-08-10,read
-20,Digital Minimalism,Cal Newport,4,4.20,Portfolio,304,2019,2023-10-10,2023-09-01,read
+1,Test Book,Author A,4,4.3,Test Publisher,250,2020,2024-12-01,2024-11-20,read
+2,Atomic Habits,James Clear,5,4.36,Avery,320,2018,2023-05-15,2023-04-10,read
+3,Deep Work,Cal Newport,4,4.25,Grand Central,304,2016,2023-06-05,2023-05-01,read
+4,The 5 AM Club,Robin Sharma,4,4.13,HarperCollins,336,2018,2023-11-12,2023-10-05,read
+5,The Psychology of Money,Morgan Housel,5,4.45,Harriman House,256,2020,2023-08-20,2023-07-15,read
+6,Rich Dad Poor Dad,Robert T. Kiyosaki,4,4.14,Warner Books,207,1997,2022-01-10,2021-12-25,read
+7,Can't Hurt Me,David Goggins,5,4.36,Lioncrest Publishing,364,2018,2022-06-28,2022-06-01,read
+8,Ikigai,Héctor García,4,4.20,Penguin,208,2016,2021-03-15,2021-03-01,read
+9,Thinking Fast and Slow,Daniel Kahneman,4,4.11,Farrar, 499,2011,2021-11-25,2021-10-30,read
+10,The Subtle Art of Not Giving a F*ck,Mark Manson,3,3.9,HarperOne,224,2016,2020-12-05,2020-11-15,read
