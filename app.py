@@ -2,80 +2,72 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(page_title="📚 Goodreads Dashboard", layout="wide")
-st.title("📚 Goodreads Reading Dashboard")
+st.set_page_config(page_title="📘 Book-Based Dashboard", layout="wide")
+st.title("📘 Goodreads Book-Based Dashboard")
 
-# Load Data
+# Load data
 @st.cache_data
 def load_data():
     return pd.read_csv("goodreads_library_export.csv", on_bad_lines='skip')
 
 df = load_data()
 
-# Convert date columns
+# Preprocessing
 df['Date Read'] = pd.to_datetime(df['Date Read'], errors='coerce')
 df['Date Added'] = pd.to_datetime(df['Date Added'], errors='coerce')
-
-# Sidebar filters
-st.sidebar.header("Filters")
-min_year = st.sidebar.slider("Filter by Year", 1900, 2025, (2000, 2025))
-
-# Book Read by Year
-st.subheader("📖 Books Read by Year")
 df['Read Year'] = df['Date Read'].dt.year
-books_per_year = df[df['Read Year'].between(*min_year)]['Read Year'].value_counts().sort_index()
-fig1 = px.bar(x=books_per_year.index, y=books_per_year.values, labels={'x': 'Year', 'y': 'Books Read'})
-st.plotly_chart(fig1, use_container_width=True)
-
-# Book Age by Publication Year
-st.subheader("📚 Book Age by Publication Year")
-fig2 = px.histogram(df, x='Year Published', nbins=50, title="Publication Year Distribution")
-st.plotly_chart(fig2, use_container_width=True)
-
-# Rating Distribution
-st.subheader("⭐ How You Rated Your Reads")
-fig3 = px.histogram(df, x='My Rating', nbins=10)
-st.plotly_chart(fig3, use_container_width=True)
-
-# Goodreads Ratings
-st.subheader("🌟 Goodreads User Ratings")
-fig4 = px.histogram(df, x='Average Rating', nbins=20)
-st.plotly_chart(fig4, use_container_width=True)
-
-# Book Length Distribution
-st.subheader("📏 Book Length (Pages)")
-fig5 = px.histogram(df, x='Number of Pages', nbins=50)
-st.plotly_chart(fig5, use_container_width=True)
-
-# Days to Finish Reading
-st.subheader("⏱️ How Quickly You Read")
 df['Days to Finish'] = (df['Date Read'] - df['Date Added']).dt.days
-fig6 = px.histogram(df, x='Days to Finish', nbins=40)
-st.plotly_chart(fig6, use_container_width=True)
 
-# Gender Breakdown (if gender column exists)
-if 'Author Gender' in df.columns:
-    st.subheader("⚧️ General Breakdown by Author Gender")
-    gender_counts = df['Author Gender'].value_counts()
-    fig7 = px.pie(values=gender_counts.values, names=gender_counts.index, title="Books by Gender")
-    st.plotly_chart(fig7, use_container_width=True)
+# Sidebar: Book selector
+st.sidebar.header("Select a Book")
+book_titles = sorted(df['Title'].dropna().unique())
+selected_book = st.sidebar.selectbox("Choose a book title", book_titles)
 
-    st.subheader("📈 Gender Distribution Over Time")
-    gender_time = df.groupby(['Read Year', 'Author Gender']).size().reset_index(name='Count')
-    fig8 = px.line(gender_time, x='Read Year', y='Count', color='Author Gender')
-    st.plotly_chart(fig8, use_container_width=True)
+# Filter only that book
+book_df = df[df['Title'] == selected_book]
 
-# 🔍 Search for a Specific Book by Title
-st.subheader("🔍 Search for a Book by Title")
+if book_df.empty:
+    st.warning("No data available for the selected book.")
+else:
+    st.subheader(f"📊 Analytics for: {selected_book}")
 
-search_title = st.text_input("Enter book title to search:")
+    # Rating
+    st.markdown("### ⭐ Your Rating vs Goodreads Rating")
+    fig1 = px.bar(
+        x=["Your Rating", "Goodreads Avg"],
+        y=[book_df['My Rating'].values[0], book_df['Average Rating'].values[0]],
+        labels={'x': 'Rating Source', 'y': 'Rating'},
+        color_discrete_sequence=['#636EFA', '#EF553B']
+    )
+    st.plotly_chart(fig1, use_container_width=True)
 
-if search_title:
-    result = df[df['Title'].str.contains(search_title, case=False, na=False)]
+    # Pages
+    st.markdown("### 📄 Number of Pages")
+    st.metric("Page Count", int(book_df['Number of Pages'].values[0]))
 
-    if not result.empty:
-        st.success(f"Found {len(result)} result(s):")
-        st.dataframe(result[['Title', 'Author', 'My Rating', 'Average Rating', 'Number of Pages', 'Date Read', 'Date Added', 'Exclusive Shelf']])
+    # Publication Year
+    st.markdown("### 🗓️ Publication Year")
+    st.metric("Year Published", int(book_df['Year Published'].values[0]))
+
+    # Days to Finish
+    if pd.notna(book_df['Days to Finish'].values[0]):
+        st.markdown("### ⏱️ Time Taken to Read")
+        st.metric("Days to Finish", int(book_df['Days to Finish'].values[0]))
     else:
-        st.warning("No matching books found.")
+        st.info("No valid Date Added or Date Read to calculate Days to Finish.")
 
+    # 📅 Reading Timeline (Improved for Single Book)
+if pd.notna(book_df['Date Added'].values[0]) and pd.notna(book_df['Date Read'].values[0]):
+    st.markdown("### 📅 Reading Timeline")
+
+    timeline_data = pd.DataFrame({
+        'Task': [selected_book],
+        'Start': [book_df['Date Added'].values[0]],
+        'Finish': [book_df['Date Read'].values[0]]
+    })
+
+    fig2 = px.timeline(timeline_data, x_start='Start', x_end='Finish', y='Task')
+    fig2.update_yaxes(autorange="reversed")  # Better display
+    st.plotly_chart(fig2, use_container_width=True)
+else:
+    st.info("Missing reading dates — timeline not available.")
